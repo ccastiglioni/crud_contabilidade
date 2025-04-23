@@ -1,0 +1,78 @@
+
+ROTEIRO DE ESTUDOS - NEXT.JS (PROFICIÊNCIA PROFISSIONAL)
+
+O Next pode gerar páginas estáticas (SSG), páginas dinâmicas (SSR), componentes do lado do cliente (SPA) e também APIs no backend.
+
+
+🚀 O QUE DOMINAR NO NEXT.JS (para ser competitivo no mercado)
+
+🔹 1. App Router (Nova Arquitetura)
+- Estrutura em app/ 
+- Arquivo layout.tsx e page.tsx
+- Navegação com <Link />
+- loading.tsx e error.tsx
+- generateStaticParams() para rotas dinâmicas
+
+🔹 2. Server Components vs Client Components
+- "use client" – necessário para hooks como useEffect
+- Server-only: chamadas HTTP, banco de dados
+- Client-only: formulários, interações, animações
+
+🔹 3. API Routes
+- Estrutura app/api/ com arquivos route.ts
+- Métodos HTTP (GET, POST etc)
+
+🔹 4. Data Fetching
+- getServerSideProps (SSR)
+- getStaticProps e getStaticPaths (SSG)
+- revalidate (ISR)
+- fetch() nos Server Components
+
+🔹 5. Autenticação
+- next-auth (mais usado)
+- JWT, OAuth, Magic Link, Auth0, Clerk
+- Middleware para proteger rotas
+
+🔹 6. Middleware e Redirecionamentos
+- next/middleware
+- Redirecionamento por idioma, auth etc.
+
+🔹 7. Deploy e Performance
+- Deploy no Vercel
+- next build, next export, analyze
+- CDN/Cache
+
+🔹 8. Integrações modernas
+- Tailwind CSS ou shadcn/ui
+- Zustand, Jotai ou Redux
+- Ethers.js, Wagmi, RainbowKit (para Web3)
+
+🔹 9. TypeScript
+- Tipagem de props e estados
+- Tipos para rotas, API etc.
+
+🔹 10. Testes
+- Playwright ou Cypress (e2e)
+- Jest + React Testing Library
+
+🧠 BONUS:
+- Server Actions (avanço recente)
+- Backend + Front no mesmo repo (fullstack)
+- Middleware para autenticar com carteira
+- Documentar API com REST/GraphQL
+
+💼 FOCO RÁPIDO PARA EMPREGABILIDADE:
+1. App Router moderno
+2. Server vs Client Component
+3. Ethers.js integrado
+4. Autenticação com carteira
+5. Deploy no Vercel
+
+
+
+Renderizacao:
+    frontend/src/
+    ├── main.tsx          ← Ponto de entrada da aplicação , index.html
+    ├── App.tsx           ← Componente principal (geralmente renderiza rotas ou a estrutura da UI)
+    ├── pages/
+    │   └── CadastroProduto.tsx  ← Tela de cadastro
