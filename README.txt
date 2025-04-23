@@ -1,18 +1,13 @@
-Na pasta backend:
-$ docker-compose up -d  ---build                 
+Primeiro certifique que não tem nada Rodando na porta 80:
+    sudo lsof -i :80
+se tiver o apache ou lighttpd rodando, finalize!
 
-aqui está o backEnd:
-http://localhost:8000/
+Na pasta Raiz do projeto Rode:
+    $ docker-compose up -d  ---build                 
 
-entra no container:
-docker exec -it backend_contabilidade sh
-criar o banco:
-npx prisma migrate dev --name init
-
+Aqui está o backEnd:
+    http://localhost:3000/
 
 
-listagem:
-http://localhost:3000/
-
-
-
+Sistema FrontEnd:
+    http://empresacontabilidade.localhost/
