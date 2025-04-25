@@ -70,7 +70,7 @@ function CompraProduto() {
     }
 
     useEffect(() => {
-        // Só roda se ambos tiverem valor preenchido
+
         if (!produto || !valor) return;
 
         const produtoSelecionado = listaProdutos.find(p => p.id === parseInt(produto));
