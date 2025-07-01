@@ -85,8 +85,12 @@ export default function Home() {
                     </div>
                     <div className="gridItem">
                         <h3>Relatório</h3>
-                        <ul>Em desenvolvimento..</ul>
+                        <ul>
+                            <li>Total de Compras: {compras.length}</li>
+                            <li>Total de Vendas: {vendas.length}</li>
+                        </ul>
                     </div>
+
                 </div>
 
 
