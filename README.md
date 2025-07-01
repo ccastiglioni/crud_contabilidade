@@ -37,4 +37,5 @@ http://localhost:3000
 http://localhost
 
 ## 💻 Tela do Sistema
-![Tela do sistema](./images/sistema.png)
+![Tela do sistema](images/sistema.png)
+
