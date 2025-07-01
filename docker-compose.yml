@@ -11,6 +11,8 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
+    networks:
+      - app_net
 
   backend:
     container_name: backend_contabilidade
@@ -26,6 +28,8 @@ services:
       - postgres
     environment:
       DATABASE_URL: postgres://cleber:123456@postgres:5432/crud_contabilidade
+    networks:
+      - app_net
 
   frontend:
     container_name: frontend_contabilidade
@@ -39,6 +43,8 @@ services:
       - ./frontend:/app
     depends_on:
       - backend
+    networks:
+      - app_net
 
   proxy:
     image: nginx:alpine
@@ -49,6 +55,12 @@ services:
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     depends_on:
       - frontend
+    networks:
+      - app_net
 
 volumes:
   postgres_data:
+
+networks:
+  app_net:
+    driver: bridge

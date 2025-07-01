@@ -1,37 +1,29 @@
 import { useEffect, useState } from "react";
 
 function VendaProduto() {
-    const [fornecedor, setFornecedor] = useState('');
+    const [cliente, setCliente] = useState('');
     const [produto, setProduto] = useState('');
     const [valor, setValor] = useState('');
     const [quantidade, setQuantidade] = useState('');
-    const [valorIcms, setvalorIcms] = useState('0');
+    const [valorIcms, setValorIcms] = useState('0');
 
-    const [listaFornecedores, setListaFornecedores] = useState<any[]>([]);
+    const [listaClientes, setListaClientes] = useState<any[]>([]);
     const [listaProdutos, setListaProdutos] = useState<any[]>([]);
 
     useEffect(() => {
-        async function fetchFornecedores() {
-            try {
-                const res = await fetch('/api/fornecedores/listar');
-                const data = await res.json();
-                setListaFornecedores(data);
-            } catch (error) {
-                console.error('Erro ao carregar fornecedores:', error);
-            }
+        async function fetchClientes() {
+            const res = await fetch('/api/clientes/listar');
+            const data = await res.json();
+            setListaClientes(data);
         }
-        fetchFornecedores();
+        fetchClientes();
     }, []);
 
     useEffect(() => {
         async function fetchProdutos() {
-            try {
-                const res = await fetch('/api/produtos/listar');
-                const data = await res.json();
-                setListaProdutos(data);
-            } catch (error) {
-                console.error('Erro ao carregar produtos:', error);
-            }
+            const res = await fetch('/api/produtos/listar');
+            const data = await res.json();
+            setListaProdutos(data);
         }
         fetchProdutos();
     }, []);
@@ -39,38 +31,30 @@ function VendaProduto() {
     async function SendRequest(e: React.FormEvent) {
         e.preventDefault();
 
-        try {
-            const response = await fetch('/api/vendas/cadastrar', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    fornecedorId: fornecedor,
-                    produtoId: produto,
-                    valor,
-                    quantidade,
-                }),
-            });
+        const response = await fetch('/api/vendas/cadastrar', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                clienteId: cliente,
+                produtoId: produto,
+                valor,
+                quantidade,
+            }),
+        });
 
-            if (response.ok) {
-                alert('Compra cadastrada com sucesso!');
-                // Limpa o formulário
-                setFornecedor('');
-                setProduto('');
-                setValor('');
-                setQuantidade('');
-            } else {
-                alert('Erro ao cadastrar compra.');
-                console.error('Erro ao cadastrar Venda:', await response.json());
-            }
-
-        } catch (error) {
-            console.error('Erro na requisição:', error);
-            alert('Erro inesperado. Tente novamente.');
+        if (response.ok) {
+            alert('Compra cadastrada com sucesso!');
+            setCliente('');
+            setProduto('');
+            setValor('');
+            setQuantidade('');
+            setValorIcms('0');
+        } else {
+            const errorMsg = await response.json();
+            alert('Erro ao cadastrar compra.');
+            console.error('Erro:', errorMsg);
         }
     }
-
 
     useEffect(() => {
         if (!produto || !valor) return;
@@ -80,23 +64,21 @@ function VendaProduto() {
         if (produtoSelecionado) {
             const base = parseFloat(valor);
             const icms = produtoSelecionado.icmscredito;
-
             const valorFinal = base * (icms / 100);
-            setvalorIcms(valorFinal.toFixed(2));
+            setValorIcms(valorFinal.toFixed(2));
         }
     }, [produto, valor, listaProdutos]);
-
 
     return (
         <div className="container">
             <h2 className="text-white">Venda de Produtos</h2>
-            <p className="text-white"> Valor Débito de ICMS : {valorIcms} </p>
+            <p className="text-white">Valor Débito de ICMS: {valorIcms}</p>
             <form onSubmit={SendRequest}>
                 <div className="mb-3">
-                    <label className="form-label text-white">Fornecedor</label>
-                    <select value={fornecedor} onChange={e => setFornecedor(e.target.value)} className="form-select">
-                        <option value="">Selecione um fornecedor</option>
-                        {listaFornecedores.map((f, i) => (
+                    <label className="form-label text-white">Cliente</label>
+                    <select value={cliente} onChange={e => setCliente(e.target.value)} className="form-select">
+                        <option value="">Selecione um cliente</option>
+                        {listaClientes.map((f, i) => (
                             <option key={i} value={f.id}>{f.nome}</option>
                         ))}
                     </select>
@@ -121,6 +103,7 @@ function VendaProduto() {
                         type="text"
                     />
                 </div>
+
                 <div className="mb-3">
                     <label className="form-label text-white">Quantidade</label>
                     <input

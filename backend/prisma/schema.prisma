@@ -1,0 +1,66 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model produto {
+  id           Int      @id @default(autoincrement())
+  nome         String
+  precoCompra  Float
+  precoVenda   Float
+  icmsCredito  Float
+  icmsDebito   Float
+  criadoEm     DateTime @default(now())
+
+  compras      compra[]
+  vendas       venda[]
+}
+
+model cliente {
+  id       Int      @id @default(autoincrement())
+  cpfCnpj  String
+  nome     String
+  cidade   String
+  estado   String
+
+  vendas   venda[]  // <-- relação inversa adicionada aqui
+}
+
+model fornecedor {
+  id       Int       @id @default(autoincrement())
+  cnpj     String
+  nome     String
+  cidade   String
+  estado   String
+
+  compras  compra[]  // <-- já estava ok
+}
+
+model compra {
+  id           Int        @id @default(autoincrement())
+  fornecedor   fornecedor @relation(fields: [fornecedorId], references: [id])
+  fornecedorId Int
+  produto      produto    @relation(fields: [produtoId], references: [id])
+  produtoId    Int
+  icms         Float
+  quantidade   Int
+  valor        Int
+  criadoEm     DateTime   @default(now())
+}
+
+model venda {
+  id         Int      @id @default(autoincrement())
+  produtoId  Int
+  clienteId  Int
+  quantidade Int
+  valor      Float
+  icms       Float
+  criadoEm   DateTime @default(now())
+
+  produto    produto  @relation(fields: [produtoId], references: [id])
+  cliente    cliente  @relation(fields: [clienteId], references: [id])
+}
