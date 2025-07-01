@@ -34,4 +34,4 @@ docker-compose up -d --build
 http://localhost:3000
 
 💼 Frontend (Sistema Web):
-http://empresacontabilidade.localhost
+http://localhost
