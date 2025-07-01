@@ -55,7 +55,7 @@ export default function Home() {
     return (
         <div className="dark-container">
             <div className="dark-card">
-                <h1>Bem-vindo à ContábilPro</h1>
+                <h2>Bem-vindo à ContábilPro</h2>
 
                 <hr className="hrcunt" />
 

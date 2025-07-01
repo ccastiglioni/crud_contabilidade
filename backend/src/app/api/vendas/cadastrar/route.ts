@@ -59,7 +59,7 @@ export async function POST(request: Request) {
         const novaVenda = await prisma.venda.create({
             data: {
                 produtoId,
-              //  clienteId, 
+                clienteId, 
                 valor,
                 quantidade,
                 icms,
@@ -75,7 +75,7 @@ export async function POST(request: Request) {
 
     } catch (error: any) {
         console.error('Erro ao cadastrar venda:', error);
-        console.debug('payload:', data);
+        //console.debug('payload:', data);
 
         return NextResponse.json({
             error: 'Erro ao cadastrar venda',
