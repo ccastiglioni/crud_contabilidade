@@ -56,6 +56,12 @@ export default function Home() {
         <div className="dark-container">
             <div className="dark-card">
                 <h2>Bem-vindo à ContábilPro</h2>
+                     <div className="card-tax-info">
+                        <strong>Regime Tributário: Lucro Presumido</strong><br />
+                        <span style={{ color: '#b6e3ff', fontWeight: 400, fontSize: '0.97em' }}>
+                                Este sistema está configurado para empresas enquadradas no Lucro Presumido, utilizado principalmente por médias empresas.<br />
+                        </span>
+                    </div>
 
                 <hr className="hrcunt" />
 
@@ -93,8 +99,16 @@ export default function Home() {
 
                 </div>
 
-
             </div>
+                <footer className="footer-tax-info">
+                <strong>Como funciona?</strong><br />
+                <ul style={{ listStyle: "disc", textAlign: "left", display: "inline-block", margin: 0, paddingLeft: 20 }}>
+                    <li>A base de cálculo dos impostos é presumida pelo governo (normalmente <b>8%</b> da receita para comércio e <b>32%</b> para serviços).</li>
+                    <li>Os principais impostos apurados aqui são: <b>IRPJ</b>, <b>CSLL</b>, <b>PIS</b>, <b>COFINS</b> e <b>ICMS</b>.</li>
+                    <li>O cálculo do lucro, custos e impostos segue os percentuais estabelecidos pela legislação vigente.</li>
+                </ul>
+                </footer>
+            
         </div>
     );
 

@@ -18,17 +18,45 @@ type Produto = {
 export default function RelatorioProdutos() {
   const [produtos, setProdutos] = useState<Produto[]>([]);
 
-  useEffect(() => {
-    fetch('http://localhost/api/relatorios')
-      .then((res) => res.json())
-      .then((data) => setProdutos(data))
-      .catch((err) => console.error('Erro ao carregar produtos', err));
-  }, []);
+useEffect(() => {
+  fetch('http://localhost/api/relatorios')
+    .then(res => res.json())
+    .then(data => {
+      if (Array.isArray(data)) {
+        setProdutos(data);
+      } else {
+        setProdutos([]); // evita erro se vier objeto de erro
+        console.error('Erro: retorno inesperado da API', data);
+      }
+    })
+    .catch(err => {
+      setProdutos([]);
+      console.error('Erro ao carregar produtos', err);
+    });
+}, []);
+
 
   return (
     <div className="dark-container">
       <div className="dark-card">
         <h2>📦 Produtos Cadastrados</h2>
+        <div className="mb-4" style={{ fontSize: '0.95em', color: '#aaa' }}>
+  <strong>Cálculo do Lucro Líquido no Lucro Presumido:</strong><br />
+  <span>
+    <b>Base Presumida:</b> 8% da receita bruta para comércio (<code>precoVenda × 0.08</code>)<br />
+    <b>IRPJ:</b> 15% da base presumida (<code>basePresumida × 0.15</code>)<br />
+    <b>CSLL:</b> 9% da base presumida (<code>basePresumida × 0.09</code>)<br />
+    <b>PIS:</b> 0,65% da receita bruta (<code>precoVenda × 0.0065</code>)<br />
+    <b>COFINS:</b> 3% da receita bruta (<code>precoVenda × 0.03</code>)<br />
+    <b>ICMS a recolher:</b> Débito - Crédito (<code>(precoVenda × icmsDébito%) - (precoCompra × icmsCrédito%)</code>)<br />
+    <b>Lucro Líquido:</b> Lucro Bruto - Impostos e ICMS<br />
+  </span>
+  <span style={{ fontSize: '0.9em', color: '#ccc' }}>
+    * Considerando alíquota de comércio (8%). Para serviços, use 32% como base.
+  </span>
+</div>
+
+
         <table className="table table-striped table-bordered table-dark">
           <thead>
             <tr>
@@ -46,7 +74,7 @@ export default function RelatorioProdutos() {
             </tr>
           </thead>
           <tbody>
-            {produtos.map((p) => (
+            {(produtos || []).map((p) => (
               <tr key={p.id}>
                 <td>{p.nome}</td>
                 <td>R$ {p.precoCompra.toFixed(2)}</td>

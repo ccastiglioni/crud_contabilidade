@@ -6,6 +6,7 @@ function CompraProduto() {
     const [valor, setValor] = useState('');
     const [quantidade, setQuantidade] = useState('');
     const [valorIcms, setvalorIcms] = useState('0');
+    const [icmsARecolher, setIcmsARecolher] = useState('0');
 
     const [listaFornecedores, setListaFornecedores] = useState<any[]>([]);
     const [listaProdutos, setListaProdutos] = useState<any[]>([]);
@@ -69,25 +70,46 @@ function CompraProduto() {
         }
     }
 
-    useEffect(() => {
+  useEffect(() => {
+    if (!produto) {
+        setvalorIcms('0');
+        setIcmsARecolher('0');
+        return;
+    }
+    const produtoSelecionado = listaProdutos.find(p => p.id === parseInt(produto));
+    if (produtoSelecionado) {
+        const precoCompra = produtoSelecionado.precoCompra;
+        const precoVenda = produtoSelecionado.precoVenda;
+        const icmsCredito = produtoSelecionado.icmsCredito;
+        const icmsDebito = produtoSelecionado.icmsDebito;
 
-        if (!produto || !valor) return;
+        // ICMS Crédito na compra
+        const credito = precoCompra * (icmsCredito / 100);
+        // ICMS Débito na venda
+        const debito = precoVenda * (icmsDebito / 100);
+        // ICMS a recolher
+        const aRecolher = debito - credito;
 
-        const produtoSelecionado = listaProdutos.find(p => p.id === parseInt(produto));
-
-        if (produtoSelecionado) {
-            const base = parseFloat(valor);
-            const icms = produtoSelecionado.icmscredito;
-
-            const valorFinal = base * (icms / 100);
-            setvalorIcms(valorFinal.toFixed(2));
-        }
-    }, [produto, valor, listaProdutos]);
+        setvalorIcms(credito.toFixed(2));
+        setIcmsARecolher(aRecolher.toFixed(2));
+    } else {
+        setvalorIcms('0');
+        setIcmsARecolher('0');
+    }
+}, [produto, listaProdutos]);
 
     return (
         <div className="container">
             <h2 className="text-white">Compra de Produtos</h2>
-            <p className="text-white"> Valor Credito de ICMS : {valorIcms} </p>
+             
+            <p className="text-white">
+                Valor Crédito de ICMS: R$ {valorIcms}
+                <br />
+                <span style={{ fontSize: '0.99em', color: '#aaf' }}>
+                    ICMS a recolher no Momento venda desse produto: <b>R$ {icmsARecolher}</b>
+                </span>
+            </p>
+
             <form onSubmit={SendRequest}>
                 <div className="mb-3">
                     <label className="form-label text-white">Fornecedor</label>
@@ -110,19 +132,20 @@ function CompraProduto() {
                 </div>
 
                 <div className="mb-3">
-                    <label className="form-label text-white">Valor</label>
-                    <input
-                        value={valor}
-                        onChange={e => setValor(e.target.value)}
-                        className="form-control"
-                        type="text"
-                    />
-                </div>
-                <div className="mb-3">
                     <label className="form-label text-white">Quantidade</label>
                     <input
                         value={quantidade}
                         onChange={e => setQuantidade(e.target.value)}
+                        className="form-control"
+                        type="text"
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <label className="form-label text-white">Valor</label>
+                    <input
+                        value={valor}
+                        onChange={e => setValor(e.target.value)}
                         className="form-control"
                         type="text"
                     />
@@ -133,5 +156,4 @@ function CompraProduto() {
         </div>
     );
 }
-
 export default CompraProduto;

@@ -37,6 +37,33 @@ http://localhost:3000
 http://localhost
 
 ```
+---
+
+## 📦 Estrutura do Projeto
+
+crud_contabilidade/
+├── backend/      # API Next.js + Prisma
+│   ├── prisma/
+│   │   ├── migrations/
+│   │   └── schema.prisma
+│   └── src/app/api/
+├── frontend/     # Vite + React
+│   ├── public/
+│   └── src/
+├── images/       # Imagens para o README
+├── docker-compose.yml
+├── nginx.conf
+└── README.md
+
+Se você quiser zerar todos os dados **:
+
+```bash
+docker compose exec postgres psql -U cleber -d crud_contabilidade
+
+TRUNCATE TABLE venda, compra, cliente, fornecedor, produto RESTART IDENTITY CASCADE;
+
+```
+
 ## 💻 Tela do Sistema
 ![Tela do sistema](images/sistema.png)
 

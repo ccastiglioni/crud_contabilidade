@@ -43,7 +43,7 @@ function VendaProduto() {
         });
 
         if (response.ok) {
-            alert('Compra cadastrada com sucesso!');
+            alert('Venda cadastrada com sucesso!');
             setCliente('');
             setProduto('');
             setValor('');
@@ -51,8 +51,8 @@ function VendaProduto() {
             setValorIcms('0');
         } else {
             const errorMsg = await response.json();
-            alert('Erro ao cadastrar compra.');
-            console.error('Erro:', errorMsg);
+            alert('Erro ao cadastrar Venda! '+ errorMsg.message);
+            console.log('Erro:', errorMsg);
         }
     }
 
