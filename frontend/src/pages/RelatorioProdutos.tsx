@@ -6,6 +6,13 @@ type Produto = {
   precoCompra: number;
   precoVenda: number;
   custoTotal: number;
+  lucroEstimado: number;
+  IRPJ: number;
+  CSLL: number;
+  PIS: number;
+  COFINS: number;
+  ICMS: number;
+  lucroLiquido: number;
 };
 
 export default function RelatorioProdutos() {
@@ -19,57 +26,46 @@ export default function RelatorioProdutos() {
   }, []);
 
   return (
-     <div className="dark-container">
-            <div className="dark-card">
-      <h2>📦 Produtos Cadastrados</h2>
-      <table className="table table-striped table-bordered table-dark">
-        <thead>
-          <tr>
-            <th>Nome</th>
-            <th>Preço Compra</th>
-            <th>Preço Venda</th>
-            <th>Custo Total</th>
-          </tr>
-        </thead>
-        <tbody>
-          {produtos.map((p) => (
-            <tr key={p.id}>
-              <td>{p.nome}</td>
-              <td>R$ {p.precoCompra.toFixed(2)}</td>
-              <td>R$ {p.precoVenda.toFixed(2)}</td>
-              <td>R$ {p.custoTotal.toFixed(2)}</td>
+    <div className="dark-container">
+      <div className="dark-card">
+        <h2>📦 Produtos Cadastrados</h2>
+        <table className="table table-striped table-bordered table-dark">
+          <thead>
+            <tr>
+              <th>Nome</th>
+              <th>Preço Compra</th>
+              <th>Preço Venda</th>
+              <th>Custo Total</th>
+              <th>Lucro Bruto</th>
+              <th>IRPJ</th>
+              <th>CSLL</th>
+              <th>PIS</th>
+              <th>COFINS</th>
+              <th>ICMS</th>
+              <th className="text-success">Lucro Líquido</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
-
-      <h2 className="mt-5">💰 Cálculo de Lucro</h2>
-      <table className="table table-striped table-bordered table-success">
-        <thead>
-          <tr>
-            <th>Produto</th>
-            <th>Preço Venda</th>
-            <th>Custo Total</th>
-            <th>Lucro</th>
-          </tr>
-        </thead>
-        <tbody>
-          {produtos.map((p) => {
-            const lucro = p.precoVenda - p.custoTotal;
-            return (
+          </thead>
+          <tbody>
+            {produtos.map((p) => (
               <tr key={p.id}>
                 <td>{p.nome}</td>
+                <td>R$ {p.precoCompra.toFixed(2)}</td>
                 <td>R$ {p.precoVenda.toFixed(2)}</td>
                 <td>R$ {p.custoTotal.toFixed(2)}</td>
-                <td className={lucro >= 0 ? 'text-success' : 'text-danger'}>
-                  R$ {lucro.toFixed(2)}
+                <td>R$ {p.lucroEstimado.toFixed(2)}</td>
+                <td>R$ {p.IRPJ.toFixed(2)}</td>
+                <td>R$ {p.CSLL.toFixed(2)}</td>
+                <td>R$ {p.PIS.toFixed(2)}</td>
+                <td>R$ {p.COFINS.toFixed(2)}</td>
+                <td>R$ {p.ICMS.toFixed(2)}</td>
+                <td className={p.lucroLiquido >= 0 ? 'text-success fw-bold' : 'text-danger fw-bold'}>
+                  R$ {p.lucroLiquido.toFixed(2)}
                 </td>
               </tr>
-            );
-          })}
-        </tbody>
-      </table>
-    </div>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

@@ -14,7 +14,8 @@ model produto {
   precoVenda  Float
   icmsCredito Float
   icmsDebito  Float
-  custoTotal  Float    @default(0)
+  custoTotal  Float?    @default(0)
+  lucroEstimado Float? @default(0)
   criadoEm    DateTime @default(now())
 
   compras compra[]

@@ -5,8 +5,8 @@ export default function CadastroProduto() {
         nome: '',
         precoCompra: '',
         precoVenda: '',
-        icmsCredito: '',
-        icmsDebito: ''
+        icmsCredito: '12',
+        icmsDebito: '18'
     });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,12 +58,12 @@ export default function CadastroProduto() {
                 </div>
 
                 <div className="mb-3">
-                    <label className="form-label">Percentual de ICMS Crédito</label>
+                    <label className="form-label">Percentual de ICMS Crédito(%)</label>
                     <input name="icmsCredito" value={form.icmsCredito} onChange={handleChange} type="number" step="0.01" required className="form-control" />
                 </div>
 
                 <div className="mb-3">
-                    <label className="form-label">Percentual de ICMS Débito</label>
+                    <label className="form-label">Percentual de ICMS Débito(%)</label>
                     <input name="icmsDebito" value={form.icmsDebito} onChange={handleChange} type="number" step="0.01" required className="form-control" />
                 </div>
 

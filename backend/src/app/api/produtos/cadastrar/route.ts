@@ -24,47 +24,38 @@ export async function OPTIONS() {
     });
 }
 
-    
 export async function POST(request: Request) {
   try {
     const body = await request.json();
     const { nome, precoCompra, precoVenda, icmsCredito, icmsDebito } = body;
 
-    const preco = parseFloat(precoCompra);
-    const icms = parseFloat(icmsCredito);
-    const custoTotal = preco + (preco * (icms / 100));
+    const custoTotal = precoCompra; // <--- CORRIGIDO
+    const lucroEstimado = precoVenda - precoCompra;
 
     const novoProduto = await prisma.produto.create({
       data: {
-        nome, 
+        nome,
         precoCompra,
         precoVenda,
         icmsCredito,
         icmsDebito,
-        custoTotal
+        custoTotal,
+        lucroEstimado,
       },
     });
 
     return NextResponse.json(novoProduto, {
       status: 201,
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
+        'Access-Control-Allow-Origin': '*'
+      }
     });
-
   } catch (error: any) {
-    return NextResponse.json({
-      error: 'Erro ao cadastrar produto',
-      message: error.message,
-    }, {
+    return NextResponse.json({ error: 'Erro ao cadastrar produto', message: error.message }, {
       status: 500,
       headers: {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-      },
+        'Access-Control-Allow-Origin': '*'
+      }
     });
   }
 }
@@ -87,5 +78,3 @@ export async function GET() {
         });
     }
 }
-
-
