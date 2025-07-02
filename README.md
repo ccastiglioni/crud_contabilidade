@@ -40,7 +40,7 @@ http://localhost
 ---
 
 ## 📦 Estrutura do Projeto
-
+```bash
 crud_contabilidade/
 ├── backend/      # API Next.js + Prisma
 │   ├── prisma/
@@ -54,7 +54,7 @@ crud_contabilidade/
 ├── docker-compose.yml
 ├── nginx.conf
 └── README.md
-
+```
 Se você quiser zerar todos os dados **:
 
 ```bash
