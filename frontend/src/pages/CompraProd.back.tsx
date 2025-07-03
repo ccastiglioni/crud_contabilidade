@@ -37,44 +37,9 @@ function CompraProduto() {
         fetchProdutos();
     }, []);
 
-    // ATENÇÃO: Recalcula ICMS toda vez que mudar produto, valor ou quantidade
-        useEffect(() => {
-            if (!produto) {
-                setvalorIcms('0');
-                setIcmsARecolher('0');
-                return;
-            }
-            const produtoSelecionado = listaProdutos.find(p => p.id === parseInt(produto));
-            if (produtoSelecionado) {
-                // Usa valor digitado APENAS para compra
-                const precoCompra = valor && parseFloat(valor) > 0 ? parseFloat(valor) : produtoSelecionado.precoCompra;
-                // SEMPRE usa precoVenda cadastrado no produto para débito
-                const precoVenda = produtoSelecionado.precoVenda;
-                const icmsCredito = produtoSelecionado.icmsCredito;
-                const icmsDebito = produtoSelecionado.icmsDebito;
-                const qtd = quantidade ? parseInt(quantidade) : 1;
-
-                // Crédito ICMS (COMPRA)
-                const credito = precoCompra * qtd * (icmsCredito / 100);
-                // Débito ICMS (VENDA)
-                const debito = precoVenda * qtd * (icmsDebito / 100);
-                
-                console.log('debito: ',debito)
-                // ICMS a recolher (venda - compra)
-                const aRecolher = debito - credito;
-                console.log('aRecolher: ',aRecolher)
-
-                setvalorIcms(credito.toFixed(2));
-                setIcmsARecolher(aRecolher.toFixed(2));
-            } else {
-                setvalorIcms('0');
-                setIcmsARecolher('0');
-            }
-        }, [produto, valor, quantidade, listaProdutos]);
-
-
     async function SendRequest(e: React.FormEvent) {
         e.preventDefault();
+        //console.log({ fornecedor, produto, valor, quantidade });
         try {
             const response = await fetch('http://localhost:3000/api/compras/cadastrar', {
                 method: 'POST',
@@ -105,10 +70,38 @@ function CompraProduto() {
         }
     }
 
+  useEffect(() => {
+    if (!produto) {
+        setvalorIcms('0');
+        setIcmsARecolher('0');
+        return;
+    }
+    const produtoSelecionado = listaProdutos.find(p => p.id === parseInt(produto));
+    if (produtoSelecionado) {
+        const precoCompra = produtoSelecionado.precoCompra;
+        const precoVenda = produtoSelecionado.precoVenda;
+        const icmsCredito = produtoSelecionado.icmsCredito;
+        const icmsDebito = produtoSelecionado.icmsDebito;
+
+        // ICMS Crédito na compra
+        const credito = precoCompra * (icmsCredito / 100);
+        // ICMS Débito na venda
+        const debito = precoVenda * (icmsDebito / 100);
+        // ICMS a recolher
+        const aRecolher = debito - credito;
+
+        setvalorIcms(credito.toFixed(2));
+        setIcmsARecolher(aRecolher.toFixed(2));
+    } else {
+        setvalorIcms('0');
+        setIcmsARecolher('0');
+    }
+}, [produto, listaProdutos]);
+
     return (
         <div className="container">
             <h2 className="text-white">Compra de Produtos</h2>
-
+             
             <p className="text-white">
                 Valor Crédito de ICMS: R$ {valorIcms}
                 <br />
@@ -144,21 +137,17 @@ function CompraProduto() {
                         value={quantidade}
                         onChange={e => setQuantidade(e.target.value)}
                         className="form-control"
-                        type="number"
-                        min="1"
+                        type="text"
                     />
                 </div>
 
                 <div className="mb-3">
-                    <label className="form-label text-white">Valor (por unidade)</label>
+                    <label className="form-label text-white">Valor</label>
                     <input
                         value={valor}
                         onChange={e => setValor(e.target.value)}
                         className="form-control"
-                        type="number"
-                        min="0"
-                        step="0.01"
-                        placeholder="Valor unitário da compra"
+                        type="text"
                     />
                 </div>
 
@@ -167,5 +156,4 @@ function CompraProduto() {
         </div>
     );
 }
-
 export default CompraProduto;

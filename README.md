@@ -55,7 +55,7 @@ crud_contabilidade/
 ├── nginx.conf
 └── README.md
 ```
-Se você quiser zerar todos os dados **:
+Se você quiser zerar todos os dados:
 
 ```bash
 docker compose exec postgres psql -U cleber -d crud_contabilidade

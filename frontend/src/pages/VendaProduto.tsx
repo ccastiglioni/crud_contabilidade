@@ -5,7 +5,7 @@ function VendaProduto() {
     const [produto, setProduto] = useState('');
     const [valor, setValor] = useState('');
     const [quantidade, setQuantidade] = useState('');
-    const [valorIcms, setValorIcms] = useState('0');
+   
 
     const [listaClientes, setListaClientes] = useState<any[]>([]);
     const [listaProdutos, setListaProdutos] = useState<any[]>([]);
@@ -48,7 +48,7 @@ function VendaProduto() {
             setProduto('');
             setValor('');
             setQuantidade('');
-            setValorIcms('0');
+  
         } else {
             const errorMsg = await response.json();
             alert('Erro ao cadastrar Venda! '+ errorMsg.message);
@@ -56,23 +56,12 @@ function VendaProduto() {
         }
     }
 
-    useEffect(() => {
-        if (!produto || !valor) return;
-
-        const produtoSelecionado = listaProdutos.find(p => p.id === parseInt(produto));
-
-        if (produtoSelecionado) {
-            const base = parseFloat(valor);
-            const icms = produtoSelecionado.icmscredito;
-            const valorFinal = base * (icms / 100);
-            setValorIcms(valorFinal.toFixed(2));
-        }
-    }, [produto, valor, listaProdutos]);
+ 
 
     return (
         <div className="container">
             <h2 className="text-white">Venda de Produtos</h2>
-            <p className="text-white">Valor Débito de ICMS: {valorIcms}</p>
+            
             <form onSubmit={SendRequest}>
                 <div className="mb-3">
                     <label className="form-label text-white">Cliente</label>
